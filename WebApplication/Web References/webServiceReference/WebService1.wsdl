@@ -12,6 +12,82 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="insertClinicalStory">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="doctorId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pacientId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="diagnose" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="treatment" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertClinicalStoryResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="InsertDoctor">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertDoctorResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="getAllDoctorPacients">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="doctorId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getAllDoctorPacientsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getAllDoctorPacientsResult" type="tns:ArrayOfPacient" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPacient">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Pacient" nillable="true" type="tns:Pacient" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Pacient">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="diagnose" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="treatment" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="date" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="loginPacient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="loginPacientResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="loginPacientResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertPacient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="name" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="insertPacientResponse">
+        <s:complexType />
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="HelloWorldSoapIn">
@@ -20,10 +96,60 @@
   <wsdl:message name="HelloWorldSoapOut">
     <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
   </wsdl:message>
+  <wsdl:message name="insertClinicalStorySoapIn">
+    <wsdl:part name="parameters" element="tns:insertClinicalStory" />
+  </wsdl:message>
+  <wsdl:message name="insertClinicalStorySoapOut">
+    <wsdl:part name="parameters" element="tns:insertClinicalStoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertDoctorSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertDoctor" />
+  </wsdl:message>
+  <wsdl:message name="InsertDoctorSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertDoctorResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAllDoctorPacientsSoapIn">
+    <wsdl:part name="parameters" element="tns:getAllDoctorPacients" />
+  </wsdl:message>
+  <wsdl:message name="getAllDoctorPacientsSoapOut">
+    <wsdl:part name="parameters" element="tns:getAllDoctorPacientsResponse" />
+  </wsdl:message>
+  <wsdl:message name="loginPacientSoapIn">
+    <wsdl:part name="parameters" element="tns:loginPacient" />
+  </wsdl:message>
+  <wsdl:message name="loginPacientSoapOut">
+    <wsdl:part name="parameters" element="tns:loginPacientResponse" />
+  </wsdl:message>
+  <wsdl:message name="insertPacientSoapIn">
+    <wsdl:part name="parameters" element="tns:insertPacient" />
+  </wsdl:message>
+  <wsdl:message name="insertPacientSoapOut">
+    <wsdl:part name="parameters" element="tns:insertPacientResponse" />
+  </wsdl:message>
   <wsdl:portType name="WebService1Soap">
     <wsdl:operation name="HelloWorld">
       <wsdl:input message="tns:HelloWorldSoapIn" />
       <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertClinicalStory">
+      <wsdl:input message="tns:insertClinicalStorySoapIn" />
+      <wsdl:output message="tns:insertClinicalStorySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertDoctor">
+      <wsdl:input message="tns:InsertDoctorSoapIn" />
+      <wsdl:output message="tns:InsertDoctorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getAllDoctorPacients">
+      <wsdl:input message="tns:getAllDoctorPacientsSoapIn" />
+      <wsdl:output message="tns:getAllDoctorPacientsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="loginPacient">
+      <wsdl:input message="tns:loginPacientSoapIn" />
+      <wsdl:output message="tns:loginPacientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="insertPacient">
+      <wsdl:input message="tns:insertPacientSoapIn" />
+      <wsdl:output message="tns:insertPacientSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WebService1Soap" type="tns:WebService1Soap">
@@ -37,11 +163,101 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="insertClinicalStory">
+      <soap:operation soapAction="http://tempuri.org/insertClinicalStory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertDoctor">
+      <soap:operation soapAction="http://tempuri.org/InsertDoctor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDoctorPacients">
+      <soap:operation soapAction="http://tempuri.org/getAllDoctorPacients" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginPacient">
+      <soap:operation soapAction="http://tempuri.org/loginPacient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertPacient">
+      <soap:operation soapAction="http://tempuri.org/insertPacient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="WebService1Soap12" type="tns:WebService1Soap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="HelloWorld">
       <soap12:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertClinicalStory">
+      <soap12:operation soapAction="http://tempuri.org/insertClinicalStory" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertDoctor">
+      <soap12:operation soapAction="http://tempuri.org/InsertDoctor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllDoctorPacients">
+      <soap12:operation soapAction="http://tempuri.org/getAllDoctorPacients" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginPacient">
+      <soap12:operation soapAction="http://tempuri.org/loginPacient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="insertPacient">
+      <soap12:operation soapAction="http://tempuri.org/insertPacient" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
