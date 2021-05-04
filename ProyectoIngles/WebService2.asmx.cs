@@ -9,26 +9,21 @@ using System.Text;
 using System.Web;
 using System.Web.Services;
 
+
 namespace ProyectoIngles
 {
     /// <summary>
-    /// Descripción breve de WebService1
+    /// Descripción breve de WebService2
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // Para permitir que se llame a este servicio web desde un script, usando ASP.NET AJAX, quite la marca de comentario de la línea siguiente. 
     // [System.Web.Script.Services.ScriptService]
-    public class WebService1 : System.Web.Services.WebService
+    public class WebService2 : System.Web.Services.WebService
     {
         public String DBpath;
         public SQLiteConnection conn;
-
-        [WebMethod]
-        public string HelloWorld()
-        {
-            return "Hola a todos";
-        }
 
         /*********************************************************************************************
          * 
@@ -252,13 +247,17 @@ namespace ProyectoIngles
             string doctorCheck = loginDoctor(dni, password);
             string pacientCheck = loginPacient(dni, password);
 
-            if (!doctorCheck.Equals("EMPTY")) {
-                return new Userdata(Convert.ToInt32(doctorCheck),"DOCTOR");
-            } else if (!pacientCheck.Equals("EMPTY")) {
-                return new Userdata(Convert.ToInt32(pacientCheck), "PACIENT");
-            } else
+            if (!doctorCheck.Equals("EMPTY"))
             {
-                return new Userdata(0,"EMPTY");
+                return new Userdata(Convert.ToInt32(doctorCheck), "DOCTOR");
+            }
+            else if (!pacientCheck.Equals("EMPTY"))
+            {
+                return new Userdata(Convert.ToInt32(pacientCheck), "PACIENT");
+            }
+            else
+            {
+                return new Userdata(0, "EMPTY");
             }
         }
 

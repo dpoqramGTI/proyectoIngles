@@ -7,8 +7,8 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
-using WebApplication.webServiceReference;
 using System.Web.Security;
+using WebApplication.localhost;
 
 namespace WebApplication
 {
@@ -39,30 +39,39 @@ namespace WebApplication
         }
         public void createLogin(Object sender, EventArgs e)
         {
-            String usernameTb = username.Text.ToString();
-            String passwordTb = password.Text.ToString();
-            if (ValidateUser(usernameTb, passwordTb))
+            try
             {
-                if (usernameTb == "doctor" && passwordTb == "doctor")
+                String usernameTb = username.Text.ToString();
+                String passwordTb = password.Text.ToString();
+                if (ValidateUser(usernameTb, passwordTb))
                 {
-                    HttpCookie userInfo = new HttpCookie("doctor");
-                    userInfo["doctor"] = "true";
-                    userInfo.Expires.Add(new TimeSpan(0, 1, 0));
-                    Response.Cookies.Add(userInfo);
-                    FormsAuthentication.RedirectFromLoginPage(usernameTb, false);
-                    Response.Redirect(Page.ResolveClientUrl("./doctor/Doctor.aspx"));
+                    WebService1 ws = new WebService1();
+                    Userdata userdataRes = ws.login(usernameTb, passwordTb);
+                    if (userdataRes.id != 0 && userdataRes.loguedAs.Equals("DOCTOR"))
+                    {
+                        HttpCookie userInfo = new HttpCookie("doctor");
+                        userInfo["doctor"] = "true";
+                        userInfo.Expires.Add(new TimeSpan(0, 1, 0));
+                        Response.Cookies.Add(userInfo);
+                        FormsAuthentication.RedirectFromLoginPage(usernameTb, false);
+                        Response.Redirect(Page.ResolveClientUrl("./doctor/Doctor.aspx"));
+                    }
+                    else if (userdataRes.id != 0 && userdataRes.loguedAs.Equals("PACIENT"))
+                    {
+                        HttpCookie userInfo = new HttpCookie("doctor");
+                        userInfo["doctor"] = "false";
+                        userInfo.Expires.Add(new TimeSpan(0, 1, 0));
+                        Response.Cookies.Add(userInfo);
+                        FormsAuthentication.RedirectFromLoginPage(usernameTb, false);
+                        Response.Redirect(Page.ResolveClientUrl("./patient/patient.aspx"));
+                    }
                 }
-                if (usernameTb == "mew" && passwordTb == "mew")
-                {
-                    HttpCookie userInfo = new HttpCookie("doctor");
-                    userInfo["doctor"] = "false";
-                    userInfo.Expires.Add(new TimeSpan(0, 1, 0));
-                    Response.Cookies.Add(userInfo);
-                    FormsAuthentication.RedirectFromLoginPage(usernameTb, false);
-                    Response.Redirect(Page.ResolveClientUrl("./patient/patient.aspx"));
-                }
+                Response.Write(username);
+
+            } catch(Exception ex)
+            {
+                String errMsg = ex.Message;
             }
-            Response.Write(username);
            
         }
         protected void Page_Load(object sender, EventArgs e)

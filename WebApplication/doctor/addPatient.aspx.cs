@@ -4,13 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using WebApplication.webServiceReference;
 
 namespace WebApplication
 {
     public partial class WebForm6 : System.Web.UI.Page
     {
-        WebService1 webServiceReference = new WebService1();
+        //WebService1 webServiceReference = new WebService1();
         //WebService1 ws = new WebService1();
         private bool ValidateUser(string userName, string passWord)
         {
