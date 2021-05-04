@@ -31,16 +31,6 @@ namespace WebApplication.webServiceReference {
         
         private System.Threading.SendOrPostCallback HelloWorldOperationCompleted;
         
-        private System.Threading.SendOrPostCallback insertClinicalStoryOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback InsertDoctorOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback getAllDoctorPacientsOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback loginPacientOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback insertPacientOperationCompleted;
-        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -83,21 +73,6 @@ namespace WebApplication.webServiceReference {
         public event HelloWorldCompletedEventHandler HelloWorldCompleted;
         
         /// <remarks/>
-        public event insertClinicalStoryCompletedEventHandler insertClinicalStoryCompleted;
-        
-        /// <remarks/>
-        public event InsertDoctorCompletedEventHandler InsertDoctorCompleted;
-        
-        /// <remarks/>
-        public event getAllDoctorPacientsCompletedEventHandler getAllDoctorPacientsCompleted;
-        
-        /// <remarks/>
-        public event loginPacientCompletedEventHandler loginPacientCompleted;
-        
-        /// <remarks/>
-        public event insertPacientCompletedEventHandler insertPacientCompleted;
-        
-        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/HelloWorld", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string HelloWorld() {
             object[] results = this.Invoke("HelloWorld", new object[0]);
@@ -125,160 +100,6 @@ namespace WebApplication.webServiceReference {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/insertClinicalStory", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public void insertClinicalStory(int doctorId, int pacientId, string diagnose, string treatment) {
-            this.Invoke("insertClinicalStory", new object[] {
-                        doctorId,
-                        pacientId,
-                        diagnose,
-                        treatment});
-        }
-        
-        /// <remarks/>
-        public void insertClinicalStoryAsync(int doctorId, int pacientId, string diagnose, string treatment) {
-            this.insertClinicalStoryAsync(doctorId, pacientId, diagnose, treatment, null);
-        }
-        
-        /// <remarks/>
-        public void insertClinicalStoryAsync(int doctorId, int pacientId, string diagnose, string treatment, object userState) {
-            if ((this.insertClinicalStoryOperationCompleted == null)) {
-                this.insertClinicalStoryOperationCompleted = new System.Threading.SendOrPostCallback(this.OninsertClinicalStoryOperationCompleted);
-            }
-            this.InvokeAsync("insertClinicalStory", new object[] {
-                        doctorId,
-                        pacientId,
-                        diagnose,
-                        treatment}, this.insertClinicalStoryOperationCompleted, userState);
-        }
-        
-        private void OninsertClinicalStoryOperationCompleted(object arg) {
-            if ((this.insertClinicalStoryCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.insertClinicalStoryCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/InsertDoctor", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public void InsertDoctor(string name) {
-            this.Invoke("InsertDoctor", new object[] {
-                        name});
-        }
-        
-        /// <remarks/>
-        public void InsertDoctorAsync(string name) {
-            this.InsertDoctorAsync(name, null);
-        }
-        
-        /// <remarks/>
-        public void InsertDoctorAsync(string name, object userState) {
-            if ((this.InsertDoctorOperationCompleted == null)) {
-                this.InsertDoctorOperationCompleted = new System.Threading.SendOrPostCallback(this.OnInsertDoctorOperationCompleted);
-            }
-            this.InvokeAsync("InsertDoctor", new object[] {
-                        name}, this.InsertDoctorOperationCompleted, userState);
-        }
-        
-        private void OnInsertDoctorOperationCompleted(object arg) {
-            if ((this.InsertDoctorCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.InsertDoctorCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getAllDoctorPacients", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public Pacient[] getAllDoctorPacients(int doctorId) {
-            object[] results = this.Invoke("getAllDoctorPacients", new object[] {
-                        doctorId});
-            return ((Pacient[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getAllDoctorPacientsAsync(int doctorId) {
-            this.getAllDoctorPacientsAsync(doctorId, null);
-        }
-        
-        /// <remarks/>
-        public void getAllDoctorPacientsAsync(int doctorId, object userState) {
-            if ((this.getAllDoctorPacientsOperationCompleted == null)) {
-                this.getAllDoctorPacientsOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetAllDoctorPacientsOperationCompleted);
-            }
-            this.InvokeAsync("getAllDoctorPacients", new object[] {
-                        doctorId}, this.getAllDoctorPacientsOperationCompleted, userState);
-        }
-        
-        private void OngetAllDoctorPacientsOperationCompleted(object arg) {
-            if ((this.getAllDoctorPacientsCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getAllDoctorPacientsCompleted(this, new getAllDoctorPacientsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/loginPacient", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string loginPacient(string dni, string password) {
-            object[] results = this.Invoke("loginPacient", new object[] {
-                        dni,
-                        password});
-            return ((string)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void loginPacientAsync(string dni, string password) {
-            this.loginPacientAsync(dni, password, null);
-        }
-        
-        /// <remarks/>
-        public void loginPacientAsync(string dni, string password, object userState) {
-            if ((this.loginPacientOperationCompleted == null)) {
-                this.loginPacientOperationCompleted = new System.Threading.SendOrPostCallback(this.OnloginPacientOperationCompleted);
-            }
-            this.InvokeAsync("loginPacient", new object[] {
-                        dni,
-                        password}, this.loginPacientOperationCompleted, userState);
-        }
-        
-        private void OnloginPacientOperationCompleted(object arg) {
-            if ((this.loginPacientCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.loginPacientCompleted(this, new loginPacientCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/insertPacient", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public void insertPacient(string dni, string name, string password) {
-            this.Invoke("insertPacient", new object[] {
-                        dni,
-                        name,
-                        password});
-        }
-        
-        /// <remarks/>
-        public void insertPacientAsync(string dni, string name, string password) {
-            this.insertPacientAsync(dni, name, password, null);
-        }
-        
-        /// <remarks/>
-        public void insertPacientAsync(string dni, string name, string password, object userState) {
-            if ((this.insertPacientOperationCompleted == null)) {
-                this.insertPacientOperationCompleted = new System.Threading.SendOrPostCallback(this.OninsertPacientOperationCompleted);
-            }
-            this.InvokeAsync("insertPacient", new object[] {
-                        dni,
-                        name,
-                        password}, this.insertPacientOperationCompleted, userState);
-        }
-        
-        private void OninsertPacientOperationCompleted(object arg) {
-            if ((this.insertPacientCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.insertPacientCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -294,51 +115,6 @@ namespace WebApplication.webServiceReference {
                 return true;
             }
             return false;
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public partial class Pacient {
-        
-        private string diagnoseField;
-        
-        private string treatmentField;
-        
-        private string dateField;
-        
-        /// <remarks/>
-        public string diagnose {
-            get {
-                return this.diagnoseField;
-            }
-            set {
-                this.diagnoseField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string treatment {
-            get {
-                return this.treatmentField;
-            }
-            set {
-                this.treatmentField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string date {
-            get {
-                return this.dateField;
-            }
-            set {
-                this.dateField = value;
-            }
         }
     }
     
@@ -367,70 +143,6 @@ namespace WebApplication.webServiceReference {
             }
         }
     }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void insertClinicalStoryCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void InsertDoctorCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void getAllDoctorPacientsCompletedEventHandler(object sender, getAllDoctorPacientsCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getAllDoctorPacientsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal getAllDoctorPacientsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public Pacient[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((Pacient[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void loginPacientCompletedEventHandler(object sender, loginPacientCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class loginPacientCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal loginPacientCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public string Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void insertPacientCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
 }
 
 #pragma warning restore 1591
