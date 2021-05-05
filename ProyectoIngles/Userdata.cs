@@ -16,5 +16,6 @@ namespace ProyectoIngles
             this.loguedAs = loguedAs;
         }
         public Userdata() { }
+
     }
 }

@@ -1,0 +1,1 @@
+[{"id":4,"dni":"va be","name":"va be","password":"*****"}[{"id":2,"DoctorId":5,"PacientId":4,"diagnose":"d2","treatment":"t2","date":"d2"},{"id":4,"DoctorId":5,"PacientId":4,"diagnose":"a","treatment":"x","date":"b"},{"id":7,"DoctorId":5,"PacientId":4,"diagnose":"diag","treatment":"treat","date":"date"}]]

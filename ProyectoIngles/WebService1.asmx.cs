@@ -37,17 +37,18 @@ namespace ProyectoIngles
         *********************************************************************************************/
 
         [WebMethod]
-        public void insertHistoric(int doctorId, int pacientId, string diagnose, string treatment)
+        public void insertHistoric(int doctorId, int pacientId, string diagnose, string treatment, string date)
         {
             Database databaseObject = new Database();
-            // INSERT INTO DATABASE
-            string query = "INSERT INTO Historic (`DoctorID`,`PacientID`,`Diagnose`,`Treatment`) VALUES (@DoctorID,@PacientID,@Diagnose,@Treatment)";
+            string query = "INSERT INTO Historic (`DoctorID`,`PacientID`,`Diagnose`,`Treatment`, `Date`) VALUES (@DoctorID,@PacientID,@Diagnose,@Treatment,@Date)";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
             myCommand.Parameters.AddWithValue("@DoctorID", doctorId);
             myCommand.Parameters.AddWithValue("@PacientID", pacientId);
             myCommand.Parameters.AddWithValue("@Diagnose", diagnose);
             myCommand.Parameters.AddWithValue("@Treatment", treatment);
+            myCommand.Parameters.AddWithValue("@Date", date);
+
 
             var result = myCommand.ExecuteNonQuery();
             databaseObject.CloseConnection();
@@ -59,7 +60,6 @@ namespace ProyectoIngles
         public void InsertDoctor(string dni, string name, string password)
         {
             Database databaseObject = new Database();
-            // INSERT INTO DATABASE
             string query = "INSERT INTO Doctor (`DNI`, `Name`, `Password`) VALUES (@DNI,@Name,@Password)";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
@@ -73,12 +73,30 @@ namespace ProyectoIngles
 
             Console.WriteLine("Rows Added : {0}", result);
         }
-
-        [WebMethod]
-        public void insertPacient(string dni, string name, string password)
+        private Pacient getLatestPacient()
         {
             Database databaseObject = new Database();
-            // INSERT INTO DATABASE
+            Pacient pacient = null;
+
+            string query = "SELECT * FROM Pacient ORDER BY ID DESC LIMIT 1";
+            SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+            databaseObject.OpenConnection();
+            SQLiteDataReader result = myCommand.ExecuteReader();
+            if (result.HasRows)
+            {
+                while (result.Read())
+                {
+                    pacient = new Pacient(Convert.ToInt32(result["ID"]), Convert.ToString(result["DNI"]), Convert.ToString(result["Name"]));
+                }
+            }
+            databaseObject.CloseConnection();
+            return pacient;
+        }
+        [WebMethod]
+        public int insertPacient(string doctorId, string dni, string name, string password)
+        {
+            int id = 0;
+            Database databaseObject = new Database();
             string query = "INSERT INTO Pacient (`DNI`, `Name`, `Password`) VALUES (@DNI,@Name,@Password)";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
@@ -86,12 +104,21 @@ namespace ProyectoIngles
             myCommand.Parameters.AddWithValue("@Name", name);
             String md5password = md5Encrypt(password);
             myCommand.Parameters.AddWithValue("@Password", md5password);
-
-            var result = myCommand.ExecuteNonQuery();
-            databaseObject.CloseConnection();
-
-            Console.WriteLine("Rows Added : {0}", result);
+            SQLiteDataReader result = myCommand.ExecuteReader();
+            if (result.HasRows)
+            {
+                while (result.Read())
+                {
+                    id = Convert.ToInt32(result["ID"]);
+                }
+                databaseObject.CloseConnection();
+                Console.WriteLine("Rows Added : {0}", result);
+            }
+            Pacient pacient = getLatestPacient();
+            insertHistoric(Convert.ToInt32(doctorId), pacient.id, "initial diagnose", "initial treatment", DateTime.Now.ToString());
+            return pacient.id;
         }
+
 
         /*********************************************************************************************
          * 
@@ -99,17 +126,40 @@ namespace ProyectoIngles
          * 
         *********************************************************************************************/
 
+
         [WebMethod]
-        public List<Historic> getAllDoctorPacients(int doctorId, int pacientId)
+        public List<Pacient> getAllDoctorPacients(int doctorId)
+        {
+            Database databaseObject = new Database();
+            List<Pacient> pacientList = new List<Pacient>();
+
+            string query = "SELECT * FROM Historic WHERE DoctorID = @DoctorID GROUP By PacientID; ";
+            SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+            databaseObject.OpenConnection();
+            myCommand.Parameters.AddWithValue("@DoctorID", doctorId);
+
+            SQLiteDataReader result = myCommand.ExecuteReader();
+            if (result.HasRows)
+            {
+                while (result.Read())
+                {
+                    Pacient pacient = getPacientInfo(Convert.ToInt32(result["PacientID"]));
+                    pacientList.Add(pacient);
+                }
+            }
+            databaseObject.CloseConnection();
+            return pacientList;
+        }
+
+        [WebMethod]
+        public List<Historic> getAllPacientRecords(int pacientId)
         {
             Database databaseObject = new Database();
             List<Historic> pacientList = new List<Historic>();
 
-            //// SELECT FROM DATABASE
-            string query = "SELECT * FROM Historic WHERE DoctorID=@DoctorID AND PacientID=@PacientID;";
+            string query = "SELECT * FROM Historic WHERE PacientID=@PacientID;";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
-            myCommand.Parameters.AddWithValue("@DoctorID", doctorId);
             myCommand.Parameters.AddWithValue("@PacientID", pacientId);
 
             SQLiteDataReader result = myCommand.ExecuteReader();
@@ -130,8 +180,6 @@ namespace ProyectoIngles
         {
             Database databaseObject = new Database();
             Pacient pacient = null;
-            //// SELECT FROM DATABASE
-            //string query = "SELECT ID FROM Pacient WHERE DNI = '@dni' AND Password = '@password';";
             string query = "SELECT * FROM Pacient WHERE ID = @id;";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
@@ -148,13 +196,13 @@ namespace ProyectoIngles
             return pacient;
         }
 
+
+
         [WebMethod]
         public Doctor getDoctorInfo(int doctorId)
         {
             Database databaseObject = new Database();
             Doctor doctor = null;
-            //// SELECT FROM DATABASE
-            //string query = "SELECT ID FROM Pacient WHERE DNI = '@dni' AND Password = '@password';";
             string query = "SELECT * FROM Doctor WHERE ID = @id;";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
@@ -177,7 +225,6 @@ namespace ProyectoIngles
             Database databaseObject = new Database();
             List<Doctor> doctorList = new List<Doctor>();
 
-            //// SELECT FROM DATABASE
             string query = "SELECT * FROM Doctor";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
@@ -252,20 +299,23 @@ namespace ProyectoIngles
             string doctorCheck = loginDoctor(dni, password);
             string pacientCheck = loginPacient(dni, password);
 
-            if (!doctorCheck.Equals("EMPTY")) {
-                return new Userdata(Convert.ToInt32(doctorCheck),"DOCTOR");
-            } else if (!pacientCheck.Equals("EMPTY")) {
-                return new Userdata(Convert.ToInt32(pacientCheck), "PACIENT");
-            } else
+            if (!doctorCheck.Equals("EMPTY"))
             {
-                return new Userdata(0,"EMPTY");
+                return new Userdata(Convert.ToInt32(doctorCheck), "DOCTOR");
+            }
+            else if (!pacientCheck.Equals("EMPTY"))
+            {
+                return new Userdata(Convert.ToInt32(pacientCheck), "PACIENT");
+            }
+            else
+            {
+                return new Userdata(0, "EMPTY");
             }
         }
 
         public string md5Encrypt(string text)
         {
             Encoding unicode = Encoding.Unicode;
-            // Convert unicode string into a byte array.  
             byte[] textInbyteArray = unicode.GetBytes(text);
 
             using (MD5 md5Hash = MD5.Create())
@@ -299,16 +349,14 @@ namespace ProyectoIngles
         }
 
         [WebMethod]
-        public void updatePacient(string pacientId, string dni, string name, string password)
+        public void updatePacient(string pacientId, string dni, string name)
         {
             Database databaseObject = new Database();
-            string query = "UPDATE Pacient SET DNI = @dni, Name = @name, Password = @password WHERE ID = @pacientId; ";
+            string query = "UPDATE Pacient SET DNI = @dni, Name = @name WHERE ID = @pacientId; ";
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
             myCommand.Parameters.AddWithValue("@name", name);
             myCommand.Parameters.AddWithValue("@dni", dni);
-            String md5password = md5Encrypt(password);
-            myCommand.Parameters.AddWithValue("@password", md5password);
             myCommand.Parameters.AddWithValue("@pacientId", pacientId);
             myCommand.ExecuteNonQuery();
             databaseObject.CloseConnection();
@@ -357,6 +405,7 @@ namespace ProyectoIngles
             myCommand.Parameters.AddWithValue("@pacientId", pacientId);
             myCommand.ExecuteNonQuery();
             databaseObject.CloseConnection();
+            deleteClinicalRecordsWithPacientId(pacientId);
         }
 
         [WebMethod]
@@ -367,6 +416,18 @@ namespace ProyectoIngles
             SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
             databaseObject.OpenConnection();
             myCommand.Parameters.AddWithValue("@recordId", recordId);
+            myCommand.ExecuteNonQuery();
+            databaseObject.CloseConnection();
+        }
+
+        [WebMethod]
+        public void deleteClinicalRecordsWithPacientId(string pacientId)
+        {
+            Database databaseObject = new Database();
+            string query = "DELETE FROM Historic WHERE PacientID = @pacientId; ";
+            SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+            databaseObject.OpenConnection();
+            myCommand.Parameters.AddWithValue("@pacientId", pacientId);
             myCommand.ExecuteNonQuery();
             databaseObject.CloseConnection();
         }

@@ -11,13 +11,14 @@ namespace ProyectoIngles
     public class Database
     {
         public SQLiteConnection myConnection;
-        private string DBpath = "C:\\GITprojects\\proyectoIngles\\ProyectoIngles\\BaseDeDatos.db;";
+        private string DBpath = "C:\\Users\\DANI\\source\\repos\\ProyectoIngles\\ProyectoIngles\\BaseDeDatos.db;";
+
         public Database()
         {
             myConnection = new SQLiteConnection("Data Source = " + DBpath + " Version = 3; ");
-            if (!File.Exists(DBpath))
+            if (!File.Exists("C:\\Users\\DANI\\source\\repos\\ProyectoIngles\\ProyectoIngles\\BaseDeDatos.db"))
             {
-                SQLiteConnection.CreateFile(DBpath);
+                SQLiteConnection.CreateFile("C:\\Users\\DANI\\source\\repos\\ProyectoIngles\\ProyectoIngles\\BaseDeDatosCreada.db");
                 System.Console.WriteLine("Database file created");
             }
         }

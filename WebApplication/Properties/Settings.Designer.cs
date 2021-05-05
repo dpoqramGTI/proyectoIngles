@@ -26,10 +26,10 @@ namespace WebApplication.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:44392/WebService1.asmx")]
-        public string WebApplication_localhost_WebService1 {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:44337/WebService1.asmx")]
+        public string WebApplication_webServiceReference_WebService1 {
             get {
-                return ((string)(this["WebApplication_localhost_WebService1"]));
+                return ((string)(this["WebApplication_webServiceReference_WebService1"]));
             }
         }
     }

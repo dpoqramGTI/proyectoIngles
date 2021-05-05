@@ -7,11 +7,11 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace WebApplication
+namespace WebApplication.doctor
 {
 
 
-    public partial class WebForm6
+    public partial class WebForm2
     {
 
         /// <summary>
@@ -31,6 +31,15 @@ namespace WebApplication
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox addUsername;
+
+        /// <summary>
+        /// Control dniTextbox.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox dniTextbox;
 
         /// <summary>
         /// Control addPassword.
